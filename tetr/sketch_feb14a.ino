@@ -1,7 +1,8 @@
 #include <SPI.h>
 #include <Adafruit_GFX.h>
 #include <Max72xxPanel.h>
-#include "Figure.h"
+
+#include "S.h"
 
 int pinCS = 9; // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
 int numberOfHorizontalDisplays = 1;
@@ -60,14 +61,10 @@ void drawMatrix() {
 void setup() {
   matrix.setIntensity(2); // Use a value between 0 and 15 for brightness
   matrix.setRotation(3);
-  f = new Figure(3, 3);
-  f->drawFigure(playField);
+  f = new S(3, 3);
+
 }
 
 void loop() {
-  matrix.fillScreen(LOW);
-  drawMatrix();
-  matrix.write();
-  delay(1000);
-  f->moveFigure(playField, f->getMaskX() - 1, f->getMaskY() + 1);
+
 }
