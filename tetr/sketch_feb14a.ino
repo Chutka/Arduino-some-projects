@@ -4,7 +4,7 @@
 
 #include "S.h"
 
-int pinCS = 9; // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
+int pinCS = 10; // Attach CS to this pin, DIN to MOSI and CLK to SCK (cf http://arduino.cc/en/Reference/SPI )
 int numberOfHorizontalDisplays = 1;
 int numberOfVerticalDisplays = 4;
 
@@ -61,10 +61,15 @@ void drawMatrix() {
 void setup() {
   matrix.setIntensity(2); // Use a value between 0 and 15 for brightness
   matrix.setRotation(3);
-  f = new S(3, 3);
+  f = new S(7, 3);
+  
 
 }
 
 void loop() {
-
+  matrix.fillScreen(LOW);
+  drawMatrix();
+  matrix.write();
+  delay(1000);
+  f->rotateFigure(playField);
 }

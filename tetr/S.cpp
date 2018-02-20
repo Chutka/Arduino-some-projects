@@ -41,11 +41,14 @@ void S::clearFigure(int matrix[32][8]) {
 void S::rotateFigure(int matrix[32][8]) {
 	clearFigure(matrix);
 	position = (position + 1) % 2;
+  if (checkRight(matrix)) {
+    maskX --;
+  }
 	drawFigure(matrix);
 }
 
 bool S::checkRight(int matrix[32][8]) {
-	if (maskX < 6) {
+	if (maskX < 7) {
 		switch (position) {
 		case 0:
 			if (matrix[maskY - 1][maskX] == 1 ||
