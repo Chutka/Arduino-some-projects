@@ -302,11 +302,10 @@ void J::rotateFigure(int matrix[33][10]) {
 			} else if (
 				(
 					matrix[maskY][maskX - 1] == 1 ||
-					matrix[maskY + 1][maskX - 1] != 1
+					matrix[maskY + 1][maskX - 1] == 1
 					) &&
 				matrix[maskY][maskX + 1] != 1 &&
-				matrix[maskY][maskX + 2] != 1 &&
-				matrix[maskY - 1][maskX] != 1
+				matrix[maskY][maskX + 2] != 1
 			) {
 				clearFigure(matrix);
 				maskX += 1;
@@ -338,10 +337,9 @@ void J::rotateFigure(int matrix[33][10]) {
 				break;				
 			} else if (
 				(
-					matrix[maskY][maskX - 1] == 1 &&
-					matrix[maskY - 1][maskX - 1] == 1
+					matrix[maskY][maskX + 1] == 1 &&
+					matrix[maskY - 1][maskX + 1] == 1
 				) &&
-				matrix[maskY - 1][maskX] != 1 &&
 				matrix[maskY][maskX - 1] != 1 &&
 				matrix[maskY][maskX - 2] != 1
 			) {
@@ -513,3 +511,715 @@ bool O::checkBottom(int matrix[33][10]) {
 O::~O()
 {
 }
+void T::drawFigure(int matrix[33][10]) {
+	switch (position) {
+	case 0:
+		matrix[maskY + 1][maskX] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY][maskX + 1] = 1;
+		matrix[maskY][maskX - 1] = 1;
+		break;
+	case 1:
+		matrix[maskY][maskX - 1] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY + 1][maskX] = 1;
+		matrix[maskY - 1][maskX] = 1;
+		break;
+	case 2:
+		matrix[maskY - 1][maskX] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY][maskX - 1] = 1;
+		matrix[maskY][maskX + 1] = 1;
+		break;
+	case 3:
+		matrix[maskY][maskX + 1] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY - 1][maskX] = 1;
+		matrix[maskY + 1][maskX] = 1;
+		break;
+	default:
+		break;
+	}
+}
+
+void T::clearFigure(int matrix[33][10]) {
+	switch (position) {
+	case 0:
+		matrix[maskY + 1][maskX] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY][maskX + 1] = 0;
+		matrix[maskY][maskX - 1] = 0;
+		break;
+	case 1:
+		matrix[maskY][maskX - 1] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY + 1][maskX] = 0;
+		matrix[maskY - 1][maskX] = 0;
+		break;
+	case 2:
+		matrix[maskY - 1][maskX] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY][maskX - 1] = 0;
+		matrix[maskY][maskX + 1] = 0;
+		break;
+	case 3:
+		matrix[maskY][maskX + 1] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY - 1][maskX] = 0;
+		matrix[maskY + 1][maskX] = 0;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void T::rotateFigure(int matrix[33][10]) {
+	switch(position){
+  	case 0:
+		if (matrix[maskY - 1][maskX] != 1) {
+        	clearFigure(matrix);
+        	position = (position + 1) % 4;
+        	drawFigure(matrix);
+       	}
+       	break;
+    case 1:
+     	if (matrix[maskY][maskX + 1] != 1) {
+        	clearFigure(matrix);
+        	position = (position + 1) % 4;
+        	drawFigure(matrix);
+      	}
+    	else if (matrix[maskY][maskX + 1] == 1 &&
+         	matrix[maskY][maskX - 2] != 1) {
+       		clearFigure(matrix);
+       		maskX --;
+        	position = (position + 1) % 4;
+        	drawFigure(matrix);
+      }
+        break;
+    case 2:
+      	if (matrix[maskY + 1][maskX] != 1) {
+        	clearFigure(matrix);
+			position = (position + 1) % 4;
+ 			drawFigure(matrix);
+      	}
+      	break;
+    case 3:
+    	if (matrix[maskY][maskX - 1] != 1) {
+    	    clearFigure(matrix);
+			position = (position + 1) % 4;
+ 			drawFigure(matrix);
+    	}
+    	else if(matrix[maskY][maskX - 1] == 1 &&
+    		matrix[maskY][maskX + 2] != 1) {
+    		clearFigure(matrix);
+			maskX +=1;
+			position = (position + 1) % 4;
+			drawFigure(matrix);
+    	}
+    	break;
+
+    }
+}
+
+bool T::checkRight(int matrix[33][10]) {
+		switch (position) {
+		case 0:
+			if (matrix[maskY + 1][maskX + 1] == 1 ||    
+				matrix[maskY][maskX + 2] == 1) {
+				return true;
+			}
+			break;
+		case 1:
+			if (matrix[maskY][maskX + 1] == 1 ||   
+				matrix[maskY + 1][maskX + 1] == 1 ||  
+				matrix[maskY - 1][maskX + 1] == 1) {
+				return true;
+			}
+			break;
+		case 2:
+			if (matrix[maskY - 1][maskX + 1] == 1 ||    
+				matrix[maskY][maskX + 2] == 1) {
+				return true;
+			}
+			break;
+		case 3:
+			if (matrix[maskY][maskX + 2] == 1 ||   
+				matrix[maskY - 1][maskX + 1] == 1 ||  
+				matrix[maskY + 1][maskX + 1] == 1) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+	return false;
+}
+
+bool T::checkLeft(int matrix[33][10]) {
+		switch (position) {
+		case 0:
+			if (matrix[maskY + 1][maskX - 1] == 1 ||    
+				matrix[maskY][maskX - 2] == 1) {
+				return true;
+			}
+			break;
+		case 1:
+			if (matrix[maskY][maskX - 2] == 1 ||   
+				matrix[maskY + 1][maskX - 1] == 1 ||  
+				matrix[maskY - 1][maskX - 1] == 1) {
+				return true;
+			}
+			break;
+		case 2:
+			if (matrix[maskY - 1][maskX - 1] == 1 ||    
+				matrix[maskY][maskX - 2] == 1) {
+				return true;
+			}
+			break;
+		case 3:
+			if (matrix[maskY][maskX - 1] == 1 ||   
+				matrix[maskY - 1][maskX - 1] == 1 ||  
+				matrix[maskY + 1][maskX - 1] == 1) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+	return false;
+}
+
+bool T::checkBottom(int matrix[33][10]) {
+		switch (position) {
+		case 0:
+			if (matrix[maskY + 2][maskX] == 1 ||
+				matrix[maskY + 1][maskX + 1] == 1 ||     
+				matrix[maskY + 1][maskX - 1] == 1) {
+				return true;
+			}
+			break;
+		case 1:
+			if (matrix[maskY + 2][maskX] == 1 ||     
+				matrix[maskY + 1][maskX - 1] == 1) {
+				return true;
+			}
+			break;
+		case 2:
+			if (matrix[maskY + 1][maskX] == 1 ||  
+				matrix[maskY + 1][maskX - 1] == 1 ||   
+				matrix[maskY + 1][maskX + 1] == 1) {
+				return true;
+			}
+			break;
+		case 3:
+			if (matrix[maskY + 2][maskX] == 1 ||   
+				matrix[maskY + 1][maskX + 1] == 1) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+	return false;
+}
+
+
+T::~T()
+{
+}
+void S::drawFigure(int matrix[33][10]) {
+	switch (position) {
+	case 0:
+		matrix[maskY - 1][maskX] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY][maskX - 1] = 1;
+		matrix[maskY + 1][maskX - 1] = 1;
+		break;
+	case 1:
+		matrix[maskY][maskX - 1] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY + 1][maskX] = 1;
+		matrix[maskY + 1][maskX + 1] = 1;
+		break;
+	default:
+		break;
+	}
+}
+
+void S::clearFigure(int matrix[33][10]) {
+	switch (position) {
+	case 0:
+		matrix[maskY - 1][maskX] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY][maskX - 1] = 0;
+		matrix[maskY + 1][maskX - 1] = 0;
+		break;
+	case 1:
+		matrix[maskY][maskX - 1] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY + 1][maskX] = 0;
+		matrix[maskY + 1][maskX + 1] = 0;
+		break;
+	default:
+		break;
+	}
+}
+
+void S::rotateFigure(int matrix[33][10]) {
+	switch(position){
+	case 0:
+		if (matrix[maskY + 1][maskX] != 1 &&
+			matrix[maskY + 1][maskX + 1] != 1) {
+			clearFigure(matrix);
+			position = 1;
+			drawFigure(matrix);
+		}
+		else if (matrix[maskY + 1][maskX + 1] == 1 &&
+			matrix[maskY][maskX - 2] != 1 &&
+			matrix[maskY + 1][maskX] != 1) {
+			clearFigure(matrix);
+			position = 1;
+			maskX --;
+			drawFigure(matrix);
+		}
+		break;
+	case 1:
+		if (matrix[maskY + 1][maskX - 1] != 1 &&
+			matrix[maskY - 1][maskX] != 1) {
+			clearFigure(matrix);
+			position = 0;
+			drawFigure(matrix);
+		}
+		break;		
+	}
+}
+bool S::checkRight(int matrix[33][10]) {
+		switch (position) {
+		case 0:
+			if (matrix[maskY - 1][maskX + 1] == 1 ||
+				matrix[maskY][maskX + 1] == 1 ||
+				matrix[maskY + 1][maskX] == 1) {
+				return true;
+			}
+			break;
+		case 1:
+			if (matrix[maskY][maskX + 1] == 1 ||
+				matrix[maskY + 1][maskX + 2] == 1) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+	return false;
+}
+
+bool S::checkLeft(int matrix[33][10]) {
+		switch (position) {
+		case 0:
+			if (matrix[maskY - 1][maskX - 1] == 1 ||
+				matrix[maskY][maskX - 2] == 1 ||
+				matrix[maskY + 1][maskX - 2] == 1) {
+				return true;
+			}
+		break;
+		case 1:
+			if (matrix[maskY][maskX - 2] == 1 ||
+				matrix[maskY + 1][maskX - 1] == 1) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+	return false;
+}
+
+bool S::checkBottom(int matrix[33][10]) {
+		switch (position) {
+		case 0:
+			if (matrix[maskY + 1][maskX] == 1 ||
+				matrix[maskY + 2][maskX - 1] == 1) {
+				return true;
+			}
+			break;
+		case 1:
+			if (matrix[maskY + 2][maskX] == 1 ||
+				matrix[maskY + 1][maskX - 1] == 1 ||
+				matrix[maskY + 2][maskX + 1] == 1) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+	return false;
+}
+
+
+S::~S()
+{
+}
+void L::drawFigure(int matrix[33][10]) {
+	switch (position) {
+	case 0:
+		matrix[maskY - 1][maskX] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY + 1][maskX] = 1;
+		matrix[maskY + 1][maskX - 1] = 1;
+		break;
+	case 1:
+		matrix[maskY][maskX + 1] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY][maskX - 1] = 1;
+		matrix[maskY - 1][maskX - 1] = 1;
+		break;
+	case 2:
+		matrix[maskY + 1][maskX] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY - 1][maskX] = 1;
+		matrix[maskY - 1][maskX + 1] = 1;
+		break;
+	case 3:
+		matrix[maskY][maskX - 1] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY][maskX + 1] = 1;
+		matrix[maskY + 1][maskX + 1] = 1;
+		break;
+	}
+}
+
+void L::clearFigure(int matrix[33][10]) {
+	switch (position) {
+	case 0:
+		matrix[maskY - 1][maskX] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY + 1][maskX] = 0;
+		matrix[maskY + 1][maskX - 1] = 0;
+		break;
+	case 1:
+		matrix[maskY][maskX + 1] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY][maskX - 1] = 0;
+		matrix[maskY - 1][maskX - 1] = 0;
+		break;
+	case 2:
+		matrix[maskY + 1][maskX] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY - 1][maskX] = 0;
+		matrix[maskY - 1][maskX + 1] = 0;
+		break;
+	case 3:
+		matrix[maskY][maskX - 1] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY][maskX + 1] = 0;
+		matrix[maskY + 1][maskX + 1] = 0;
+		break;
+	}
+}
+
+void L::rotateFigure(int matrix[33][10]) {
+	switch(position) {
+		case 0:
+			if (
+				matrix[maskY][maskX + 1] != 1 &&
+				matrix[maskY][maskX - 1] != 1 &&
+				matrix[maskY - 1][maskX - 1] != 1
+			) {
+				clearFigure(matrix);
+				position = (position + 1) % 4;
+				drawFigure(matrix);
+				break;	
+			} else if (
+				(
+					matrix[maskY][maskX + 1] == 1
+					) &&
+				matrix[maskY][maskX - 1] != 1 &&
+				matrix[maskY][maskX - 2] != 1 &&
+				matrix[maskY - 1][maskX - 2] != 1
+			) {
+				clearFigure(matrix);
+				maskX -= 1;
+				position = (position + 1) % 4;
+				drawFigure(matrix);
+				break;				
+			}
+		case 1:
+			if (
+				matrix[maskY - 1][maskX + 1] != 1 &&
+				matrix[maskY - 1][maskX] != 1 &&
+				matrix[maskY + 1][maskX] != 1
+			) {
+				clearFigure(matrix);
+				position = (position + 1) % 4;
+				drawFigure(matrix);
+				break;				
+			}
+			break;
+		case 2:
+			if (
+				matrix[maskY][maskX - 1] != 1 &&
+				matrix[maskY][maskX + 1] != 1 &&
+				matrix[maskY + 1][maskX + 1] != 1
+			) {
+				clearFigure(matrix);
+				position = (position + 1) % 4;
+				drawFigure(matrix);
+				break;				
+			} else if (
+				(
+					matrix[maskY ][maskX - 1] == 1
+				) &&
+				matrix[maskY][maskX + 2] != 1 &&
+				matrix[maskY][maskX + 1] != 1 &&
+				matrix[maskY + 1][maskX + 2] != 1
+			) {
+				clearFigure(matrix);
+				position = (position + 1) % 4;
+				maskX += 1;
+				drawFigure(matrix);
+				break;
+			}
+			break;
+		case 3:
+			if (
+				matrix[maskY - 1][maskX] != 1 &&
+				matrix[maskY + 1][maskX] != 1 &&
+				matrix[maskY + 1][maskX - 1] != 1
+			) {
+				clearFigure(matrix);
+				position = (position + 1) % 4;
+				drawFigure(matrix);
+				break;				
+			}
+			break;
+	}
+}
+
+bool L::checkRight(int matrix[33][10]) {
+	switch (position) {
+	case 0:
+		if (matrix[maskY - 1][maskX + 1] == 1 ||    
+			matrix[maskY][maskX + 1] == 1 ||
+			matrix[maskY + 1][maskX + 1] == 1) {
+			return true;
+		}
+		break;
+	case 1:
+		if (matrix[maskY][maskX + 2] == 1 ||
+			matrix[maskY - 1][maskX] == 1) {
+			return true;
+		}
+		break;
+	case 2:
+		if (matrix[maskY - 1][maskX + 2] == 1 ||    
+			matrix[maskY][maskX + 1] == 1 ||
+			matrix[maskY + 1][maskX + 1] == 1) {
+			return true;
+		}
+		break;
+	case 3:
+		if (matrix[maskY][maskX + 2] == 1 ||    
+			matrix[maskY + 1][maskX + 2] == 1) {
+			return true;
+		}
+		break;
+	}
+	return false;
+}
+
+bool L::checkLeft(int matrix[33][10]) {
+		switch (position) {
+		case 0:
+			if (matrix[maskY - 1][maskX - 1] == 1 ||    
+				matrix[maskY][maskX - 1] == 1 ||
+				matrix[maskY + 1][maskX - 2] == 1) {
+				return true;
+			}
+			break;
+		case 1:
+			if (matrix[maskY][maskX - 2] == 1 ||
+				matrix[maskY - 1][maskX - 2] == 1) {
+				return true;
+			}
+			break;
+		case 2:
+			if (matrix[maskY + 1][maskX - 1] == 1 ||    
+				matrix[maskY][maskX - 1] == 1 ||
+				matrix[maskY - 1][maskX - 1] == 1) {
+				return true;
+			}
+			break;
+		case 3:
+			if (matrix[maskY][maskX - 2] == 1 ||    
+				matrix[maskY + 1][maskX] == 1) {
+				return true;
+			}
+			break;
+	}
+	return false;
+}
+
+bool L::checkBottom(int matrix[33][10]) {
+	switch (position) {
+	case 0:
+		if (matrix[maskY + 2][maskX] == 1 ||    
+			matrix[maskY + 2][maskX - 1] == 1) {
+			return true;
+		}
+		break;
+	case 1:
+		if (matrix[maskY + 1][maskX + 1] == 1 ||
+			matrix[maskY + 1][maskX] == 1 ||
+			matrix[maskY + 1][maskX - 1] == 1) {
+			return true;
+		}
+		break;
+	case 2:
+		if (matrix[maskY + 2][maskX] == 1 ||
+			matrix[maskY][maskX + 1] == 1) {
+			return true;
+		}
+		break;
+	case 3:
+		if (matrix[maskY + 1][maskX - 1] == 1 ||    
+			matrix[maskY + 1][maskX] == 1 || 
+			matrix[maskY + 2][maskX + 1] == 1) {
+			return true;
+		}
+		break;
+	}
+	return false;
+}
+
+
+L::~L()
+{
+}
+void Z::drawFigure(int matrix[33][10]) {
+	switch (position) {
+	case 1:
+		matrix[maskY][maskX + 1] = 1;
+		matrix[maskY + 1][maskX] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY + 1][maskX - 1] = 1;
+		break;
+	case 0:
+		matrix[maskY - 1][maskX] = 1;
+		matrix[maskY][maskX] = 1;
+		matrix[maskY][maskX + 1] = 1;
+		matrix[maskY + 1][maskX + 1] = 1;
+		break;
+	}
+}
+
+void Z::clearFigure(int matrix[33][10]) {
+	switch (position) {
+	case 1:
+		matrix[maskY][maskX + 1] = 0;
+		matrix[maskY + 1][maskX] = 0;
+		matrix[maskY][maskX] = 0;
+		matrix[maskY + 1][maskX - 1] = 0;
+		break;
+	case 0:
+		matrix[maskY - 1][maskX] = 0;
+    	matrix[maskY][maskX] = 0;
+    	matrix[maskY][maskX + 1] = 0;
+    	matrix[maskY + 1][maskX + 1] = 0;
+		break;
+	}
+}
+
+void Z::rotateFigure(int matrix[33][10]) {
+	switch(position) {
+	case 1:
+		if (matrix[maskY - 1][maskX] != 1 &&
+			matrix[maskY + 1][maskX + 1] != 1) {
+			clearFigure(matrix);
+			position = (position + 1) % 2;
+			drawFigure(matrix);				
+		}
+		break;
+			
+	case 0:
+		if (matrix[maskY + 1][maskX] != 1 &&
+			matrix[maskY + 1][maskX - 1] != 1) {
+			clearFigure(matrix);
+			position = (position + 1) % 2;
+			drawFigure(matrix);	
+		} 
+	else if (matrix[maskY + 1][maskX - 1] == 1 &&
+      matrix[maskY][maskX + 2] != 1 &&
+      matrix[maskY + 1][maskX] != 1) {
+			clearFigure(matrix);
+			maskX ++;
+			position = (position + 1) % 2;
+			drawFigure(matrix);			
+		}
+	    break;
+	}
+}
+
+bool Z::checkRight(int matrix[33][10]) {
+	switch (position) {
+	case 1:
+		if (matrix[maskY][maskX + 2] == 1 ||    
+			matrix[maskY + 1][maskX + 1] == 1) {
+			return true;
+		}
+		break;
+	case 0:
+		if (matrix[maskY][maskX + 2] == 1 ||
+			matrix[maskY + 1][maskX + 2] == 1 ||
+			matrix[maskY - 1][maskX + 1] == 1) {
+			return true;
+		}
+		break;
+	}
+	return false;
+}
+
+bool Z::checkLeft(int matrix[33][10]) {
+		switch (position) {
+		case 1:
+			if (matrix[maskY][maskX - 1] == 1 ||    
+				matrix[maskY + 1][maskX - 2] == 1) {
+				return true;
+			}
+			break;
+		case 0:
+			if (matrix[maskY][maskX - 1] == 1 ||
+				matrix[maskY - 1][maskX - 1] == 1 ||
+				matrix[maskY + 1][maskX] == 1) {
+				return true;
+			}
+			break;
+	}
+	return false;
+}
+
+bool Z::checkBottom(int matrix[33][10]) {
+	switch (position) {
+	case 1:
+		if (matrix[maskY + 2][maskX] == 1 ||  
+			matrix[maskY + 1][maskX + 1] == 1 ||  
+			matrix[maskY + 2][maskX - 1] == 1) {
+			return true;
+		}
+		break;
+	case 0:
+		if (matrix[maskY + 1][maskX] == 1 ||
+			matrix[maskY + 2][maskX + 1] == 1) {
+			return true;
+		}
+		break;
+	}
+	return false;
+}
+
+
+Z::~Z()
+{
+}
+

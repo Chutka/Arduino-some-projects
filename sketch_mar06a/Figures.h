@@ -150,3 +150,60 @@ public:
 
 	~O();
 };
+class S :
+	public Figure
+{
+public:
+	S(int x, int y) : Figure(x, y) { };
+	void drawFigure(int matrix[33][10]);
+	void clearFigure(int matrix[33][10]);
+	void rotateFigure(int matrix[33][10]);
+	bool checkRight(int matrix[33][10]);
+	bool checkLeft(int matrix[33][10]);
+	bool checkBottom(int matrix[33][10]);
+
+	~S();
+};
+class T :
+	public Figure
+{
+public:
+	T(int x, int y) : Figure(x, y) { };
+	void drawFigure(int matrix[33][10]);
+	void clearFigure(int matrix[33][10]);
+	void rotateFigure(int matrix[33][10]);
+	bool checkRight(int matrix[33][10]);
+	bool checkLeft(int matrix[33][10]);
+	bool checkBottom(int matrix[33][10]);
+
+	~T();
+};
+class L :
+	public Figure
+{
+public:
+	L(int x, int y) : Figure(x, y) { };
+	void drawFigure(int matrix[33][10]);
+	void clearFigure(int matrix[33][10]);
+	void rotateFigure(int matrix[33][10]);
+	bool checkRight(int matrix[33][10]);
+	bool checkLeft(int matrix[33][10]);
+	bool checkBottom(int matrix[33][10]);
+
+	~L();
+};
+class Z :
+  public Figure
+{
+public:
+  Z(int x, int y) : Figure(x, y) { };
+  void drawFigure(int matrix[33][10]);
+  void clearFigure(int matrix[33][10]);
+  void rotateFigure(int matrix[33][10]);
+  bool checkRight(int matrix[33][10]);
+  bool checkLeft(int matrix[33][10]);
+  bool checkBottom(int matrix[33][10]);
+
+  ~Z();
+};
+

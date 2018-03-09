@@ -15,6 +15,9 @@ int numberOfVerticalDisplays = 4;
 Max72xxPanel matrix = Max72xxPanel(pinCS, numberOfHorizontalDisplays, numberOfVerticalDisplays);
 
 int wait = 200;
+Figure *f;
+
+bool gamePause = false;
 
 int playField[33][10] = {
   {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -52,7 +55,7 @@ int playField[33][10] = {
   {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}  
 };
 
-Figure *f;
+
 void drawMatrix() {
   for (int i = 0; i < 32; i++) {
     for (int j = 1; j < 9; j++) {
@@ -63,17 +66,36 @@ void drawMatrix() {
   }
 }
 
+int randomNumber(int maxPos, int minPos) {
+  return (rand() % maxPos + minPos);
+}
+
 void generateFigure() {
-  switch(rand() % 3) {
+  switch(rand() % 7) {
     case 0:
-      f = new O(5, 3);
+      f = new O(randomNumber(6, 2), 1);
       break;
     case 1:
-      f = new I(5, 3);
+      f = new I(randomNumber(6, 2), 1);
       break;
     case 2:
-      f = new J(5, 3);
+      f = new J(randomNumber(6, 2), 1);
       break;
+    case 3:
+      f = new T(randomNumber(6, 2), 1);
+      break; 
+    case 4:
+      f = new S(randomNumber(6, 2), 1);
+      break; 
+    case 5:
+      f = new L(randomNumber(6, 2), 1);
+      break;
+    case 6: 
+      f = new Z(randomNumber(6, 2), 1);
+      break;  
+  }
+  for (int i = 0; i < randomNumber(4, 0); i++) {
+    f->rotateFigure(playField);
   }
   f->drawFigure(playField);
 }
@@ -82,7 +104,6 @@ void setup() {
   matrix.setIntensity(2);
   matrix.setRotation(3);
   generateFigure();
-  Serial.begin(9600);
   KB.begin(KB2);
 }
 
@@ -111,26 +132,44 @@ void clearLines() {
   }
 }
 
+void reset() {
+	for(int i = 0; i < 32; i++) {
+		for (int j = 1; j < 9; j++) {
+			playField[i][j] = 0;
+		}
+	}
+	generateFigure();
+  if (gamePause) {
+    gamePause = false;
+  }
+}
+
+void setPause() {
+  gamePause = !gamePause;
+}
 
 void moveFigure() {
   for (int i = 0; i < 20; i++) {
     matrix.fillScreen(LOW);
     drawMatrix(); 
     if (KB.check(KEY_DOWN)) {
-      if (KB.getNum == 0) {
-        f->moveFigureRight(playField);
-        Serial.print("0");
+      if (!gamePause) {
+        if (KB.getNum == 0) {
+          f->moveFigureRight(playField);
+        }
+        if (KB.getNum == 2) {
+          f->moveFigureLeft(playField);
+        }
+        if (KB.getNum == 1) {
+          f->rotateFigure(playField);
+        }
       }
-      if (KB.getNum == 2) {
-        f->moveFigureLeft(playField);
-        Serial.print("2");
+      if (KB.getNum == 15) {
+        reset();
       }
-      if (KB.getNum == 1) {
-        f->rotateFigure(playField);
-        Serial.print("1");
+      if (KB.getNum == 14) {
+        setPause();
       }
-      Serial.print(KB.getNum);
-      Serial.print("\n");
     }
     if (KB.check(KEY_PRESS)) {
       if (KB.getNum == 5) {
@@ -142,15 +181,29 @@ void moveFigure() {
     matrix.write();
     delay(10);
   }
-  f->moveFigureY(playField);
+  if (!gamePause) {
+    f->moveFigureY(playField);
+  }
   matrix.write();
 }
 
+bool checkEndOfGame() {
+  for (int j = 1; j < 9; j++) {
+    if (playField[1][j] == 1) {
+      return true;
+    }
+  }
+  return false;
+}
 
 void loop() {
   if (!f->getCheckMove()) {
     clearLines();
-    generateFigure();
+    if (!checkEndOfGame()) {
+      generateFigure();
+    } else {
+      reset();
+    }
   }
   moveFigure();
 }
